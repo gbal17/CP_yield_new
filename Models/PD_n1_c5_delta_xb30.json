@@ -1,0 +1,12 @@
+{
+    "features": [
+        "Crop_num",
+        "sar_angle",
+        "era5_evaporation_from_bare_soil_sum",
+        "week_sin",
+        "era5_totprec",
+        "era5_swi",
+        "chirps_cnt_prec",
+        "RSM_mean"
+    ]
+}
