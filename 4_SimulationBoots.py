@@ -16,8 +16,8 @@ start_time = time.time()
 
 # # Load Pre-Trained Model and Selected Features
 # The model and selected features are loaded from files in the `Models` folder.
-model_file = 'Models/PD_n1_c5_delta_xb30.joblib'
-features_file = 'Models/PD_n1_c5_delta_xb30.json'
+model_file = 'Models/PD_CF1_n1_c5_delta_xb40.joblib'
+features_file = 'Models/PD_CF1_n1_c5_delta_xb40.json'
 
 # Load pre-trained model
 if not os.path.exists(model_file):
@@ -32,10 +32,10 @@ with open(features_file, 'r') as f:
 
 # # Dataset Configuration
 # Set paths to input files.
-dataset_name = 'PD'
+dataset_name = 'PD_CF1'
 reduction_method = '_n1_c5_delta'
 input_file = os.path.join('Input', f'{dataset_name}{reduction_method}.csv')
-output_file = f'{dataset_name}{reduction_method}_xb30'
+output_file = f'{dataset_name}{reduction_method}_xb40'
 output_folder = 'Output'
 os.makedirs(output_folder, exist_ok=True)
 
@@ -93,6 +93,8 @@ y_pred_std = np.std(predictions_array, axis=0)
 
 # # Save Results DataFrame
 # Create and save a DataFrame that includes observed and predicted yields, along with crop type, field ID, year, week, and prediction uncertainties.
+
+# Create and save a DataFrame that includes observed and predicted yields, along with crop type, field ID, week, and prediction uncertainties.
 def create_results_df(X, y, y_pred_mean, y_pred_std):
     return pd.DataFrame({
         'Yield_mean': y,
@@ -100,9 +102,9 @@ def create_results_df(X, y, y_pred_mean, y_pred_std):
         'Prediction_Uncertainty': y_pred_std,  # Add the prediction uncertainty (standard deviation)
         'Crop_type': df['Crop_type'].reset_index(drop=True),
         'FIELDID': df['FIELDID'].reset_index(drop=True),
-        'Year': df['Year'].reset_index(drop=True),
-        'Week': df['week'].reset_index(drop=True),
+        'Week': df['week'].reset_index(drop=True),  # Keep Week, but remove Year
     })
+
 
 # Create results DataFrame
 results_df = create_results_df(X, y, y_pred_mean, y_pred_std)
@@ -137,6 +139,10 @@ weekly_uncertainty_df.to_csv(weekly_uncertainty_file, index=False)
 
 
 # # Plot Uncertainties by Week and Crop Type
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.ndimage import gaussian_filter1d
+
 def plot_weekly_uncertainty_with_improvements(weekly_uncertainty_df):
     # Create a figure and axis
     plt.figure(figsize=(10, 6))
@@ -145,7 +151,13 @@ def plot_weekly_uncertainty_with_improvements(weekly_uncertainty_df):
     crop_types = weekly_uncertainty_df['Crop_type'].unique()
     
     # Define a color map for each crop type
-    color_map = {'Maize': 'blue', 'Soy': 'orange'}
+    color_map = {
+        'Maize': 'blue',
+        'Soy': 'orange',
+        'Sunflower': 'green',
+        'Lucern': 'red',
+        'Wheat': 'purple'
+    }
     
     # Plot each crop type with smoothing
     for crop_type in crop_types:
@@ -159,17 +171,18 @@ def plot_weekly_uncertainty_with_improvements(weekly_uncertainty_df):
         smooth_uncertainty = gaussian_filter1d(mean_uncertainty, sigma=1)
         
         # Plot the smoothed uncertainty with line style and color
-        plt.plot(weeks, smooth_uncertainty, label=crop_type, color=color_map[crop_type], linewidth=2)
+        plt.plot(weeks, smooth_uncertainty, label=crop_type, color=color_map.get(crop_type, 'gray'), linewidth=2)
         
         # Optionally shade around the line to indicate variability (standard deviation)
         std_uncertainty = crop_data['std_uncertainty'].to_numpy()
         plt.fill_between(weeks, smooth_uncertainty - std_uncertainty, smooth_uncertainty + std_uncertainty,
-                         color=color_map[crop_type], alpha=0.2)
+                         color=color_map.get(crop_type, 'gray'), alpha=0.2)
 
     # Add labels and title
     plt.xlabel('Week of the Year')
     plt.ylabel('Mean Prediction Uncertainty')
     plt.title('Prediction Uncertainty (t/ha) per Week for Each Crop Type (Smoothed)')
+    plt.ylim(0, 1)
     
     # Add a legend
     plt.legend(title='Crop Type')
@@ -178,6 +191,7 @@ def plot_weekly_uncertainty_with_improvements(weekly_uncertainty_df):
     plt.grid(True)
     plt.tight_layout()
     # plt.show()
+
 
 # Call the function to plot the uncertainty with improvements
 plot_weekly_uncertainty_with_improvements(weekly_uncertainty_df)

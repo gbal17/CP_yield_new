@@ -1,0 +1,12 @@
+{
+    "features": [
+        "Crop_num",
+        "s1_angle",
+        "veg_median_ndvi",
+        "era5_swi",
+        "era5_rh",
+        "era5_temp2mmin",
+        "era5_totprec",
+        "era5_temp2max"
+    ]
+}
