@@ -1,4 +1,4 @@
-# Crop Yield Prediction
+# Crop Yield Prediction New
 
 This project contains a series of Python notebooks designed to facilitate data preparation, model fitting, and evaluation for predicting crop yield of Maize and Soy based on the Producer Data dataset. The goal is to enable effective data processing, model training, and prediction of crop yield using machine learning techniques.
 
