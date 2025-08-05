@@ -4,7 +4,7 @@ This project contains a series of Python notebooks designed to facilitate data p
 
 ## Notebooks and Scripts
 
-### 1. [`1_Data_Preparation.ipynb`](./1_Data_Preparation.ipynb)
+### 1. [`1_Data_Preparation.ipynb`](./1_PD_CF_Data_Preparation.ipynb)
 This notebook is designed to prepare crop yield data before feeding it into machine learning models, focusing on cleaning, feature engineering, and balancing class distribution.
 
 - **Main Tasks:**
