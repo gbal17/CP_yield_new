@@ -31,16 +31,7 @@ This notebook loads a pre-trained XGBoost model and selected features to perform
   - Adding cyclical week features and vegetation growth rates.
   - Evaluating the model and plotting results using time series scatter plots.
 
-### 4. [`4_Simulation.py`](./4_Simulation.py)
-This script performs crop yield prediction and visualization using a pre-trained XGBoost model.
-
-- **Main Tasks:**
-  - Loading the pre-trained model and features.
-  - Creating sine/cosine transformations for seasonal patterns and adding growth rates for vegetation indices.
-  - Predicting crop yield using the pre-trained model.
-  - Calculating weekly performance metrics and saving results to CSV.
-
-### 5. [`4_SimulationBoots.py`](./4_SimulationBoots.py)
+### 4. [`4_SimulationBoots.py`](./4_SimulationBoots.py)
 This script evaluates a pre-trained XGBoost model and calculates bootstrapped accuracy for yield prediction on a weekly basis.
 
 - **Main Tasks:**
@@ -57,7 +48,7 @@ Ensure that the following Python packages are installed: `pandas`, `scikit-learn
 1. Start with [`1_Data_Preparation.ipynb`](./1_Data_Preparation.ipynb) to prepare the data.
 2. Use [`2_Fit_Classifier.ipynb`](./2_Fit_Classifier.ipynb) to train the model.
 3. Use [`3_Simulation.ipynb`](./3_Simulation.ipynb) for yield predictions and evaluations.
-4. Additionally, use [`4_Simulation.py`](./4_Simulation.py) for Python-based yield predictions, and [`4_SimulationBoots.py`](./4_SimulationBoots.py) to add bootstrapped accuracy on a weekly basis.
+4. Additionally, use [`4_SimulationBoots.py`](./4_SimulationBoots.py) to add bootstrapped accuracy on a weekly basis.
 
 ### Outputs
 - The notebooks generate outputs such as CSV files, scatter plots, and saved models.
